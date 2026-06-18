@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <!-- 🟢 Bienvenida -->
+  <div id="welcomeSection" class="section active">
+    <h2>Panel de Pruebas</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 800px;">
+      <!-- Autenticación -->
+      <div class="card">
+        <h3>Autenticación</h3>
+        <button onclick="showSection('loginSection')">Iniciar Sesión</button>
+        <button onclick="showSection('registerSection')">Registrarse</button>
+      </div>
+
+      <!-- Gestión de Usuarios -->
+      <div class="card">
+        <h3>Gestión de Usuarios</h3>
+        <button onclick="showSection('viewUsers')">Ver Usuarios</button>
+        <button onclick="showSection('deleteUser')">Borrar Usuario</button>
+        <button onclick="showSection('assignUserToGroup')">Asignar Grupo a Usuario</button>
+      </div>
+
+      <!-- Gestión de Grupos -->
+      <div class="card">
+        <h3>Gestión de Grupos</h3>
+        <button onclick="showSection('createGroup')">Crear Grupo</button>
+        <button onclick="showSection('deleteGroup')">Borrar Grupo</button>
+        <button onclick="showSection('updateGroup')">Modificar Grupo</button>
+        <button onclick="showSection('viewGroups')">Ver Grupos</button>
+      </div>
+
+      <!-- Gestión de Permisos -->
+      <div class="card">
+        <h3>Gestión de Permisos</h3>
+        <button onclick="showSection('createEndpoint')">Agregar Endpoint</button>
+        <button onclick="showSection('managePermissions')">Dar Permisos a Grupo</button>
+        <button onclick="showSection('deleteEndpoint')">Eliminar Endpoint</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loginSection" class="section">
+    <h2>Iniciar Sesión</h2>
+    <form action="/login" method="post">
+      <div class="form-group">
+        <label>Usuario:</label>
+        <input type="text" name="username" required>
+      </div>
+      <div class="form-group">
+        <label>Contraseña:</label>
+        <input type="password" name="password" required>
+      </div>
+      <button type="submit">Ingresar</button>
+    </form>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver</button>
+  </div>
+
+  <div id="registerSection" class="section">
+    <h2>Registrar Usuario</h2>
+    <form action="/register" method="post">
+      <div class="form-group">
+        <label>Usuario:</label>
+        <input name="username" required>
+      </div>
+      <div class="form-group">
+        <label>Contraseña:</label>
+        <input type="password" name="password" required>
+      </div>
+      <button type="submit">Crear usuario</button>
+    </form>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver</button>
+  </div>
+
+  <div id="viewUsers" class="section">
+    <h2>Usuarios Registrados</h2>
+    <p>Lista completa de usuarios en el sistema:</p>
+    <iframe src="/api/users" width="100%" height="300" style="border: 1px solid #ddd;"></iframe>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver al Menú</button>
+  </div>
+
+  <div id="viewGroups" class="section">
+    <h2>Grupos Registrados</h2>
+    <p>Lista completa de grupos en el sistema:</p>
+    <iframe src="/api/groups" width="100%" height="300" style="border: 1px solid #ddd;"></iframe>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver al Menú</button>
+  </div>
+
+  <div id="createGroup" class="section">
+    <h2>Crear Nuevo Grupo</h2>
+    <form action="/api/admin/group/create" method="post">
+      <div class="form-group">
+        <label>Nombre del Grupo:</label>
+        <input type="text" name="name" required placeholder="Ej: moderator, editor">
+      </div>
+      <button type="submit">Crear Grupo</button>
+    </form>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver al Menú</button>
+  </div>
+
+  <div id="deleteGroup" class="section">
+    <h2>Borrar Grupo</h2>
+    <form action="/api/admin/group/delete" method="post">
+      <div class="form-group">
+        <label>ID del Grupo:</label>
+        <input type="number" name="id" required placeholder="ID del grupo a eliminar">
+      </div>
+      <button type="submit">Eliminar Grupo</button>
+    </form>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver al Menú</button>
+  </div>
+
+  <div id="updateGroup" class="section">
+    <h2>Modificar Grupo</h2>
+    <form action="/api/admin/group/update" method="post">
+      <div class="form-group">
+        <label>ID del Grupo:</label>
+        <input type="number" name="id" required placeholder="ID del grupo a modificar">
+      </div>
+      <div class="form-group">
+        <label>Nuevo Nombre:</label>
+        <input type="text" name="name" required placeholder="Nuevo nombre del grupo">
+      </div>
+      <button type="submit">Actualizar Grupo</button>
+    </form>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver al Menú</button>
+  </div>
+
+  <div id="assignUserToGroup" class="section">
+    <h2>Asignar Grupo a Usuario</h2>
+    <form action="/api/user/edit" method="post">
+      <div class="form-group">
+        <label>ID Usuario:</label>
+        <input type="number" name="id_user" required placeholder="ID del usuario">
+      </div>
+      <div class="form-group">
+      <label>ID Grupo:</label>
+        <input type="number" name="id_group" required placeholder="ID del grupo">
+      </div>
+      <button type="submit">Asignar Grupo</button>
+    </form>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver al Menú</button>
+  </div>
+
+  <div id="deleteUser" class="section">
+    <h2>Borrar Usuario</h2>
+    <form action="/api/admin/user/delete" method="post">
+      <div class="form-group">
+        <label>ID Usuario:</label>
+        <input type="number" name="user_id" required placeholder="ID del usuario a eliminar">
+      </div>
+      <button type="submit">Eliminar Usuario</button>
+    </form>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver al Menú</button>
+  </div>
+
+  <div id="createEndpoint" class="section">
+    <h2>Agregar Nuevo Endpoint</h2>
+    <form action="/api/admin/endpoint/create" method="post">
+      <div class="form-group">
+        <label>Path del Endpoint:</label>
+        <input type="text" name="path" required placeholder="Ej: /api/admin/group/create">
+      </div>
+      <button type="submit">Crear Endpoint</button>
+    </form>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver al Menú</button>
+  </div>
+
+  <div id="managePermissions" class="section">
+    <h2>Dar Permisos a Grupo</h2>
+    <form action="/api/admin/permissions" method="post">
+      <div class="form-group">
+        <label>Grupo:</label>
+        <div class="form-group">
+      <label>ID Grupo:</label>
+        <input type="number" name="id_group" required placeholder="ID del grupo">
+      </div>
+      <div class="form-group">
+        <label>Endpoint:</label>
+        <input type="text" name="endpoint" required placeholder="/api/admin/group/create">
+      </div>
+      <button type="submit">Asignar Permiso</button>
+    </form>
+    <p><small>Ejemplos de endpoints: /api/admin/group/create, /api/admin/user/delete</small></p>
+    <button onclick="showSection('welcomeSection')" class="back-btn">Volver al Menú</button>
+  </div>
+
+  <div id="deleteEndpoint" class="section">
+      <h2>Borrar Endpoint</h2>
+
+      <form action="/api/admin/endpoint/delete" method="post">
+
+        <div class="form-group">
+          <label>ID del Endpoint:</label>
+
+          <input 
+            type="number"
+            name="endpoint_id"
+            required
+            placeholder="ID del endpoint"
+          >
+        </div>
+
+        <button type="submit">
+          Eliminar Endpoint
+        </button>
+
+      </form>
+
+      <button 
+        onclick="showSection('welcomeSection')" 
+        class="back-btn"
+      >
+        Volver al Menú
+      </button>
+    </div>
+  <script>
+    function showSection(sectionId) {
+
+    const sections =
+        document.querySelectorAll('.section');
+
+    sections.forEach(removeActiveClass);
+
+    document
+        .getElementById(sectionId)
+        .classList
+        .add('active');
+}
+
+function removeActiveClass(element) {
+    element.classList.remove('active');
+}
+  </script>
+
+</body>
+</html>
