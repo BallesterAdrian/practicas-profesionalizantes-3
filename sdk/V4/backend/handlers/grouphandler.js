@@ -1,12 +1,6 @@
 import { createGroup, deleteGroup, updateGroup } from "../repositories/groupRepository.js";
 
 export function createGroupHandler(req, res) {
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
-
     let body = '';
    req.on('data', function(chunk){
       body += chunk;
@@ -28,12 +22,6 @@ export function createGroupHandler(req, res) {
 }
 
 export function deleteGroupHandler(req, res) {
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
-
     let body = '';
     req.on('data', function(chunk){
       body += chunk;
@@ -56,12 +44,6 @@ export function deleteGroupHandler(req, res) {
 
 //funcion que no probe aun
 export function updateGroupHandler(req, res) {
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
-
     let body = '';
     req.on('data', function(chunk){
       body += chunk;

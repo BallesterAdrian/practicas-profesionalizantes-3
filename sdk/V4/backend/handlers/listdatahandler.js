@@ -2,11 +2,6 @@ import { getAllUsers } from '../repositories/userRepository.js';
 import { getAllGroups } from '../repositories/groupRepository.js';
 
 export function listUsersHandler(req, res) {
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
     try {
       const users = getAllUsers();
 
@@ -28,11 +23,6 @@ export function listUsersHandler(req, res) {
 }
 
 export function listGroupsHandler(req, res) {
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
     try {
       const groups = getAllGroups();
 

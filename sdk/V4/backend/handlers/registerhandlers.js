@@ -1,15 +1,7 @@
 import { register } from "../usescause/register.js";
 
-export function register_handler(req, res)
-{
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
-
+export function register_handler(req, res){
     let body = '';
-
     req.on('data', function(chunk){
       body += chunk;
     });

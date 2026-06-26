@@ -2,11 +2,6 @@ import { group } from "node:console";
 import { assignUsertoGroup } from "../repositories/userRepository.js";
 
 export function editUserHandler(req, res) {
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      return res.end(JSON.stringify({ status: 'error', message: 'Método no permitido' }));
-    }
-
     let body = '';
     req.on('data', function(chunk){
       body += chunk;

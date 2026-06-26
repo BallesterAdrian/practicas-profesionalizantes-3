@@ -1,12 +1,6 @@
 import { login } from "../usescause/login.js";
 
 export function login_handler(req, res) {
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
-
     let body = '';
     req.on('data', function(chunk){
       body += chunk;

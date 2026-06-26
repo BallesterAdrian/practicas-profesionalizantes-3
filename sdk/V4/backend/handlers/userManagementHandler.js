@@ -2,12 +2,6 @@ import { getGroupsByUserId } from '../repositories/authRepository.js';
 import { deleteUser } from '../repositories/userRepository.js';
 // puede elimiar cualquier usuario 
 export function deleteUserHandler(req, res) {
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
-
     let body = '';
 
     req.on('data', function(chunk){

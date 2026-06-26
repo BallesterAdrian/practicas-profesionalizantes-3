@@ -1,5 +1,44 @@
 import db from "../server/database.js";
 
+const publicRoutes =[
+    '/login',
+    '/register'
+];
+
+export function isPublicRoute(path)
+{
+    return publicRoutes.includes(path);
+}
+
+export function getSessionFromRequest(req)
+{
+    const userId =
+        parseInt(
+            req.headers['x-user-id']
+        );
+
+    const apiKey =
+        req.headers['x-api-key'];
+
+    if (isNaN(userId))
+    {
+        return null;
+    }
+
+    const session = userSessions.get(userId);
+
+    if (!session)
+    {
+        return null;
+    }
+
+    if (session.apiKey !== apiKey)
+    {
+        return null;
+    }
+
+    return session;
+}
 export function authorize(id_user, endpointPath)
 {
     const sql = `

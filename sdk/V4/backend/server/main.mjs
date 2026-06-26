@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
 import { resolve } from 'node:path';
 import { userSessions } from '../usescause/sessions.js';
-import { authorize } from '../usescause/authorize.js'
+import { authorize, isPublicRoute, getSessionFromRequest } from '../usescause/authorize.js'
 
 function default_config() 
 {
@@ -61,66 +61,6 @@ let router = new Map();
 // Después de crear el router:
 setupRoutes(router, config, db);
 
-// Añade esta función para servir archivos estáticos
-function static_file_handler(filePath, response) {
-    try {
-        const fullPath = './frontend/' + filePath;
-        const content = readFileSync(fullPath, 'utf-8');
-        
-        // Determina el Content-Type según la extensión
-        let contentType = 'text/html';
-        if (filePath.endsWith('.css')) contentType = 'text/css';
-        else if (filePath.endsWith('.js')) contentType = 'application/javascript';
-        else if (filePath.endsWith('.json')) contentType = 'application/json';
-        
-        response.writeHead(200, { 'Content-Type': contentType });
-        response.end(content);
-    } catch (error) {
-        response.writeHead(404);
-        response.end('Archivo no encontrado');
-    }
-}
-
-
-const publicRoutes =[
-    '/login',
-    '/register'
-];
-
-function isPublicRoute(path)
-{
-    return publicRoutes.includes(path);
-}
-
-function getSessionFromRequest(req)
-{
-    const userId =
-        parseInt(
-            req.headers['x-user-id']
-        );
-
-    const apiKey =
-        req.headers['x-api-key'];
-
-    if (isNaN(userId))
-    {
-        return null;
-    }
-
-    const session = userSessions.get(userId);
-
-    if (!session)
-    {
-        return null;
-    }
-
-    if (session.apiKey !== apiKey)
-    {
-        return null;
-    }
-
-    return session;
-}
 
 async function request_dispatcher(req, res)
 {
@@ -138,14 +78,6 @@ async function request_dispatcher(req, res)
         return;
     }
 
-    if (path.startsWith('/static/')){
-        const filePath = path.substring(8);
-
-        return static_file_handler(
-            filePath,
-            res
-        );
-    }
 
     const handler = router.get(path);
 

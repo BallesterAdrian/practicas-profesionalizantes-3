@@ -3,11 +3,6 @@ import { getEndpointIdByPath, createEndpoint, deleteEndpoint } from '../reposito
 import { addAccess } from '../repositories/accessRepository.js';
 
 export function createEndpointHandler(req, res) {
-  if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
     let body = '';
     req.on('data', function(chunk){
       body += chunk;
@@ -46,11 +41,6 @@ export function createEndpointHandler(req, res) {
 }
 
 export function updatePermissionsHandler(req, res) {
-  if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
     let body = '';
     req.on('data', function(chunk){
       body += chunk;
@@ -104,11 +94,6 @@ export function updatePermissionsHandler(req, res) {
 }
 
 export function deleteEndpointHandler(req, res) {
-  if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
     let body = '';
 
     req.on('data', function(chunk){

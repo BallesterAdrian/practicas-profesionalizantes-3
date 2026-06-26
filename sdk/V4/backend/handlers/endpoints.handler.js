@@ -1,10 +1,4 @@
-export function log_handler(req, res)
-{
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
+export function log_handler(req, res){
     res.writeHead(200, {'Content-Type': 'application/json'});
 
     res.end(JSON.stringify({
@@ -13,13 +7,7 @@ export function log_handler(req, res)
     }));
 }
 
-export function say_hello_handler(req, res)
-{
-    if (req.method !== 'POST') {
-      res.writeHead(405);
-      res.end('Metodo no permitido');
-      return;
-    }
+export function say_hello_handler(req, res){
     res.writeHead(200, {'Content-Type': 'application/json'});
 
     res.end(JSON.stringify({
